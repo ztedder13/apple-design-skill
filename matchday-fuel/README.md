@@ -1,77 +1,86 @@
 # Matchday Fuel website
 
-A one-page site for Matchday Fuel: cold brew coffee and Lotus energy drinks named for moments in
+The website for Matchday Fuel: cold brew coffee and Lotus energy drinks named for moments in
 soccer, baseball, football, basketball, and hockey, sold at sports venues in clear 16.9 fl oz
-bottles with can-style tops. It was designed with the Apple Design Skill in this repository
-(`SKILL.md` and `references/hig/`).
+bottles with can-style tops. Customers can see the lineup, find where the stand will be, and
+order ahead for pickup, with prices, stock, and payment handled by Square. It was designed with
+the Apple Design Skill in this repository (`SKILL.md` and `references/hig/`).
+
+To put it online and connect Square and your calendar, follow [SETUP.md](SETUP.md).
 
 ## Preview
 
-Open `index.html` in a browser, or serve the folder:
-
 ```bash
-npx serve matchday-fuel
+cd matchday-fuel
+npm run dev        # http://localhost:8888
 ```
 
-It is plain HTML, CSS, and JavaScript with no build step, so any static host works (GitHub Pages,
-Netlify, Cloudflare Pages).
+Without Square keys the site runs in sample mode: sample prices and stock, a note saying online
+ordering opens soon, and a checkout button that explains nothing was charged. Opening
+`public/index.html` straight from disk also works, with the same samples.
 
-## Files
+## What's where
 
 | Path | Role |
 | --- | --- |
-| `index.html` | Page content, including the ten drinks and the shared bottle and sport-icon drawings |
-| `styles.css` | Color and type tokens at the top, then layout by section |
-| `main.js` | Booking form validation and sending |
-| `assets/` | The logo at web sizes, a social preview image, the favicon, and the home-screen icon |
+| `public/index.html` | The page, including the ten drinks (names, flavors, caffeine) |
+| `public/styles.css` | Color and type tokens at the top, then each section |
+| `public/js/` | Page behavior: `app.js` starts everything; `scenes.js` runs the scroll scenes; `lineup.js`, `schedule.js`, and `order.js` handle the menu, stops, and ordering |
+| `public/data/schedule.json` | Stops shown when no calendar is connected |
+| `public/assets/` | Logo and sport variants, product renders, the 360-degree frames |
+| `server/` | Menu, schedule, and checkout handlers, plus a local dev server and tests |
+| `netlify/functions/` | Wrappers that run the handlers on Netlify |
+| `tools/render/` | Regenerates the product renders (`npm install`, then `npm run render`) |
+| `tools/logos/` | Regenerates the sport logo variants (`npm run logos`, needs Python and Pillow) |
+| `SPEC.md` | The build contract: drink data, file names, and API shapes |
 
-## Before launch
+## Changing drinks
 
-- **Caffeine amounts are placeholders.** Each drink's caffeine figure in `index.html` is a
-  recipe target. Replace them with lab-tested values.
-- **Connect the booking form.** Set `FORM_ENDPOINT` in `main.js` to a form service URL. Until
-  then, the form validates and then tells people their request wasn't sent.
-- **Check the Lotus name.** Lotus is another company's trademark. Confirm with your supplier how
-  you may name the "Lotus energy" line, and keep the footer notice.
-- **Social preview.** `og:image` needs a full URL (`https://your-domain/assets/logo-1200.jpg`)
-  once the site has a domain.
+A drink's name, flavor, sport, and color appear in four places, so change them together:
 
-To add a drink, copy one `<li class="drink">` block, then change `--liquid` (the drink color),
-`--liquid-alpha` (lower for translucent drinks), the sport icon, and the text. Energy drinks also
-get `<use href="#bubbles"/>` inside the bottle drawing. The shelf holds five per row on wide
-screens.
+1. Its card in the lineup in `public/index.html` (and its pair in the sport scene).
+2. The drink table in `SPEC.md`, which the render tool reads.
+3. Re-render the images with `npm run render`.
+4. The item name in Square, which must match the name on the site.
 
 ## Design decisions
 
 How the skill's guidance shaped the page, with the guideline each choice follows:
 
+- **White page, light appearance only.** The owner asked for a white background to match the
+  logo, so the page commits to one appearance. The logo's paper is color-corrected to pure white
+  so it sits on the page with no visible edge. This departs from `dark-mode.md › Best practices`
+  ("Ensure that your app looks good in both appearance modes") at the owner's request; a dark
+  appearance can be added later by redefining the color tokens.
 - **One accent, used only for actions.** Brew brown marks links and primary buttons and nothing
   else. `branding.md › Best practices`: "use it intentionally for primary actions or status
   indicators." `color.md › Best practices`: "Avoid using the same color to mean different things."
-- **Light and dark from the system setting, with no switch on the page.** `dark-mode.md › Best
-  practices`: "Avoid offering an app-specific appearance setting." In dark mode the logo sits on
-  a cream disc and is dimmed slightly, per `dark-mode.md › Dark Mode colors`: "Soften the color of
-  white backgrounds."
-- **Contrast measured, not estimated.** Every text pairing clears 4.5:1 and most clear 7:1 in both
-  appearances; the values are commented in `styles.css`. `accessibility.md › Vision` sets the
-  4.5:1 floor, and `dark-mode.md › Dark Mode colors` says "strive for a contrast ratio of 7:1,
-  especially in small text."
+- **Contrast measured, not estimated.** Body text is 18.3:1 and secondary text 8.3:1 on white,
+  with values commented in `styles.css`. `accessibility.md › Vision` sets the 4.5:1 floor.
 - **Custom display face, system body face.** Archivo, stretched wide, echoes the logo's FUEL
   lettering in headlines and drink names; body copy and controls use the system font at 17 px.
   `branding.md › Best practices`: "use a custom font for headlines and subheadings while using
   system fonts for body copy and captions."
-- **Glass only on the floating navigation bar,** with an opaque fallback for Reduce Transparency
-  and Increase Contrast. `liquid-glass.md › Where the material belongs`.
-- **The logo appears once.** The navigation and footer use a small text wordmark. `branding.md ›
-  Best practices`: "Resist the temptation to display your logo throughout your app or game."
-- **Familiar controls.** The drink filter is a segmented control built from a native radio group,
-  so it works with the keyboard, screen readers, and no script. Every target is at least 44 by
-  44 px (`accessibility.md › Mobility`), and buttons have a press state (`buttons.md › Best
-  practices`).
-- **Labels say what happens.** "See the Lineup", "Book Us", "Send Request", in title case for
-  buttons and sentence case for headings. Form errors sit next to the field and say how to fix
-  it. `writing.md › Best practices`.
-- **Layout follows available width.** Drinks show as a menu-board list on phones and a five-wide
-  cooler shelf on wide screens, with the same content at every size. `layout.md › Size classes`.
-- **Motion is minimal.** Only the segmented control's thumb slides, and Reduce Motion turns it off.
-  `motion.md › Best practices`: "Add motion purposefully."
+- **Scroll scenes that respect Reduce Motion.** The sport scene and the 360-degree bottle pin
+  while you scroll, the way Apple's product pages do. With Reduce Motion on, or without script,
+  the same content appears as ordinary sections. `motion.md › Best practices`: "Make motion
+  optional." `accessibility.md › Cognitive` asks apps to reduce "automatic and repetitive
+  animations, including zooming, scaling, and peripheral motion."
+- **Glass only on the floating navigation bar and its menu,** with an opaque fallback for Reduce
+  Transparency and Increase Contrast. `liquid-glass.md › Where the material belongs`.
+- **The logo appears once at full size.** The navigation and footer use a small text wordmark,
+  and the sport variants live on the labels and in the sport scene. `branding.md › Best
+  practices`: "Resist the temptation to display your logo throughout your app or game."
+- **Familiar controls.** The drink filter is a segmented control built from a native radio
+  group; quantities use steppers whose buttons name the drink for screen readers; the pickup stop
+  is a radio list. Every target is at least 44 by 44 px (`accessibility.md › Mobility`), and
+  buttons have a press state (`buttons.md › Best practices`).
+- **Labels say what happens.** "Order Ahead", "Add to Order", "Continue to Payment", in title
+  case for buttons and sentence case for headings. Errors sit next to the field and say how to
+  fix it. `writing.md › Best practices`.
+- **Honest states.** Sample prices, example stops, and an unconnected checkout each say so in
+  plain words instead of pretending to work. `design-principles.md › Responsibility`: "Be fully
+  transparent about what your product does and why."
+- **Layout follows available width.** The lineup scrolls sideways as a shelf on phones and
+  becomes five columns on wide screens, with the same content and actions at every size.
+  `layout.md › Size classes`.

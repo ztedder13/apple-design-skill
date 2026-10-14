@@ -1,0 +1,561 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Matchday Fuel</title>
+  <meta name="description" content="Cold brew coffee and Lotus energy drinks named for the moments that decide games. Find the stand at your next game and order ahead for pickup.">
+  <meta name="color-scheme" content="light">
+  <meta name="theme-color" content="#FFFFFF">
+  <meta property="og:title" content="Matchday Fuel">
+  <meta property="og:description" content="Cold brew and Lotus energy, bottled for game day. Order ahead and grab it at the stand.">
+  <meta property="og:image" content="assets/logo/matchday-fuel-1200.jpg">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="assets/logo/apple-touch-icon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@100..125,600..900&display=swap">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <svg class="sprite" aria-hidden="true" focusable="false">
+    <symbol id="i-soccer" viewBox="0 0 24 24">
+      <g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="9"/>
+        <path d="M12 8.2l3.6 2.6-1.4 4.2H9.8l-1.4-4.2z"/>
+        <path d="M12 8.2V3.4M15.6 10.8l4.5-1.4M14.2 15l2.8 3.9M9.8 15L7 18.9M8.4 10.8L3.9 9.4"/>
+      </g>
+    </symbol>
+    <symbol id="i-baseball" viewBox="0 0 24 24">
+      <g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="9"/>
+        <path d="M6.3 5.1c2.3 1.8 3.5 4.2 3.5 6.9s-1.2 5.1-3.5 6.9M17.7 5.1c-2.3 1.8-3.5 4.2-3.5 6.9s1.2 5.1 3.5 6.9"/>
+      </g>
+    </symbol>
+    <symbol id="i-football" viewBox="0 0 24 24">
+      <g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M4.2 19.8c-.9-5.6.6-10.1 4.1-13 3.2-2.6 7.6-3.4 11.5-2.8.9 5.6-.6 10.1-4.1 13-3.2 2.6-7.6 3.4-11.5 2.8z"/>
+        <path d="M9 15l6-6M10.2 12.2l1.6 1.6M11.2 11.2l1.6 1.6M12.2 10.2l1.6 1.6"/>
+      </g>
+    </symbol>
+    <symbol id="i-basketball" viewBox="0 0 24 24">
+      <g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="9"/>
+        <path d="M3 12h18M12 3v18M5.6 5.6C8 7.8 9 9.9 9 12s-1 4.2-3.4 6.4M18.4 5.6C16 7.8 15 9.9 15 12s1 4.2 3.4 6.4"/>
+      </g>
+    </symbol>
+    <symbol id="i-hockey" viewBox="0 0 24 24">
+      <g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+        <ellipse cx="12" cy="10" rx="8" ry="3.2"/>
+        <path d="M4 10v4c0 1.8 3.6 3.2 8 3.2s8-1.4 8-3.2v-4"/>
+      </g>
+    </symbol>
+    <symbol id="i-pin" viewBox="0 0 24 24">
+      <g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 21s-6.5-5.6-6.5-11a6.5 6.5 0 0 1 13 0c0 5.4-6.5 11-6.5 11z"/>
+        <circle cx="12" cy="10" r="2.4"/>
+      </g>
+    </symbol>
+    <symbol id="i-clock" viewBox="0 0 24 24">
+      <g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="9"/>
+        <path d="M12 7v5l3 2"/>
+      </g>
+    </symbol>
+    <symbol id="i-menu" viewBox="0 0 24 24">
+      <path d="M4 8h16M4 16h16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+    </symbol>
+    <symbol id="i-minus" viewBox="0 0 24 24">
+      <path d="M6 12h12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+    </symbol>
+    <symbol id="i-plus" viewBox="0 0 24 24">
+      <path d="M12 6v12M6 12h12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+    </symbol>
+    <symbol id="i-check" viewBox="0 0 24 24">
+      <path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </symbol>
+  </svg>
+
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <nav class="bar" aria-label="Main">
+      <a class="wordmark" href="#top"><span>Matchday</span><span>Fuel</span></a>
+      <ul class="nav-links">
+        <li><a href="#lineup">Lineup</a></li>
+        <li><a href="#schedule">Schedule</a></li>
+        <li><a href="#venues">Venues</a></li>
+      </ul>
+      <a class="btn btn-primary btn-small nav-order" href="#order" data-order-link>Order Ahead<span class="count-badge" data-cart-count hidden></span></a>
+      <button class="menu-button" type="button" popovertarget="site-menu" aria-label="Menu">
+        <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-menu"/></svg>
+      </button>
+    </nav>
+    <div class="site-menu" id="site-menu" popover>
+      <ul>
+        <li><a href="#lineup">Lineup</a></li>
+        <li><a href="#bottle">Bottle</a></li>
+        <li><a href="#schedule">Schedule</a></li>
+        <li><a href="#order">Order Ahead</a></li>
+        <li><a href="#venues">Venues</a></li>
+      </ul>
+    </div>
+  </header>
+
+  <main id="main">
+    <!-- Hero -->
+    <section class="hero" id="top" aria-labelledby="hero-title">
+      <div class="wrap hero-grid">
+        <div class="hero-copy">
+          <p class="eyebrow">Cold brew + Lotus energy</p>
+          <h1 id="hero-title">From first pitch to final whistle.</h1>
+          <p class="lead">Matchday Fuel bottles cold brew coffee and Lotus energy drinks for the stands. Ten drinks, each named for a moment in the game. Order ahead, then grab yours at the stand.</p>
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="#order" data-order-link>Order Ahead</a>
+            <a class="btn btn-secondary" href="#lineup">See the Lineup</a>
+          </div>
+        </div>
+        <figure class="hero-logo">
+          <img src="assets/logo/matchday-fuel.webp" srcset="assets/logo/matchday-fuel-480.webp 480w, assets/logo/matchday-fuel.webp 960w" sizes="(min-width: 880px) 440px, 280px" width="960" height="960" alt="Matchday Fuel logo: a soccer ball drawn in splashes of coffee, with the words Matchday Fuel, Cold Brew + Energy.">
+        </figure>
+      </div>
+      <div class="hero-lineup">
+        <img class="reveal-rise" src="assets/lineup-1200.webp" srcset="assets/lineup-1200.webp 1200w, assets/lineup.webp 2400w" sizes="(min-width: 1240px) 1200px, 100vw" width="2400" height="1000" alt="All ten Matchday Fuel drinks in a row: five cold brews, from black to creamy, and five Lotus energy drinks in gold, blue, red, orange, and purple.">
+      </div>
+    </section>
+
+    <!-- Sport scene: pinned while scrolling when motion is allowed, a plain list otherwise -->
+    <section class="sports" id="sports" aria-labelledby="sports-title" data-scene="sports">
+      <div class="wrap section-intro">
+        <p class="eyebrow">Five sports</p>
+        <h2 id="sports-title">Every sport gets its own ball.</h2>
+        <p class="lead">Each sport has a cold brew and a Lotus energy drink, and each label carries its own version of the Matchday Fuel logo.</p>
+      </div>
+      <div class="sports-track">
+        <div class="sports-stage">
+          <ol class="sports-nav" aria-label="Sports">
+            <li><a href="#sport-soccer" data-step-link="0"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-soccer"/></svg><span>Soccer</span></a></li>
+            <li><a href="#sport-baseball" data-step-link="1"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-baseball"/></svg><span>Baseball</span></a></li>
+            <li><a href="#sport-football" data-step-link="2"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-football"/></svg><span>Football</span></a></li>
+            <li><a href="#sport-basketball" data-step-link="3"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-basketball"/></svg><span>Basketball</span></a></li>
+            <li><a href="#sport-hockey" data-step-link="4"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-hockey"/></svg><span>Hockey</span></a></li>
+          </ol>
+          <div class="sports-steps">
+            <article class="sport-step" id="sport-soccer" data-step="0" aria-labelledby="sport-soccer-title">
+              <img class="sport-logo" src="assets/logo/sport-soccer-480.webp" srcset="assets/logo/sport-soccer-480.webp 480w, assets/logo/sport-soccer.webp 960w" sizes="(min-width: 880px) 420px, 240px" width="960" height="960" loading="lazy" alt="The Matchday Fuel logo with a soccer ball.">
+              <div class="sport-copy">
+                <h3 id="sport-soccer-title">Soccer</h3>
+                <ul class="pair">
+                  <li><img src="assets/drinks/stoppage-time-600.webp" width="600" height="750" loading="lazy" alt=""><span class="pair-name">Stoppage Time</span><span class="pair-flavor">Classic Black cold brew</span></li>
+                  <li><img src="assets/drinks/golden-boot-600.webp" width="600" height="750" loading="lazy" alt=""><span class="pair-name">Golden Boot</span><span class="pair-flavor">Mango Passionfruit Lotus energy</span></li>
+                </ul>
+              </div>
+            </article>
+            <article class="sport-step" id="sport-baseball" data-step="1" aria-labelledby="sport-baseball-title">
+              <img class="sport-logo" src="assets/logo/sport-baseball-480.webp" srcset="assets/logo/sport-baseball-480.webp 480w, assets/logo/sport-baseball.webp 960w" sizes="(min-width: 880px) 420px, 240px" width="960" height="960" loading="lazy" alt="The Matchday Fuel logo with a baseball.">
+              <div class="sport-copy">
+                <h3 id="sport-baseball-title">Baseball</h3>
+                <ul class="pair">
+                  <li><img src="assets/drinks/seventh-inning-stretch-600.webp" width="600" height="750" loading="lazy" alt=""><span class="pair-name">Seventh-Inning Stretch</span><span class="pair-flavor">Vanilla Sweet Cream cold brew</span></li>
+                  <li><img src="assets/drinks/grand-slam-600.webp" width="600" height="750" loading="lazy" alt=""><span class="pair-name">Grand Slam</span><span class="pair-flavor">Blue Raspberry Lemonade Lotus energy</span></li>
+                </ul>
+              </div>
+            </article>
+            <article class="sport-step" id="sport-football" data-step="2" aria-labelledby="sport-football-title">
+              <img class="sport-logo" src="assets/logo/sport-football-480.webp" srcset="assets/logo/sport-football-480.webp 480w, assets/logo/sport-football.webp 960w" sizes="(min-width: 880px) 420px, 240px" width="960" height="960" loading="lazy" alt="The Matchday Fuel logo with a football.">
+              <div class="sport-copy">
+                <h3 id="sport-football-title">Football</h3>
+                <ul class="pair">
+                  <li><img src="assets/drinks/hail-mary-600.webp" width="600" height="750" loading="lazy" alt=""><span class="pair-name">Hail Mary</span><span class="pair-flavor">Salted Caramel cold brew</span></li>
+                  <li><img src="assets/drinks/red-zone-600.webp" width="600" height="750" loading="lazy" alt=""><span class="pair-name">Red Zone</span><span class="pair-flavor">Strawberry Watermelon Lotus energy</span></li>
+                </ul>
+              </div>
+            </article>
+            <article class="sport-step" id="sport-basketball" data-step="3" aria-labelledby="sport-basketball-title">
+              <img class="sport-logo" src="assets/logo/sport-basketball-480.webp" srcset="assets/logo/sport-basketball-480.webp 480w, assets/logo/sport-basketball.webp 960w" sizes="(min-width: 880px) 420px, 240px" width="960" height="960" loading="lazy" alt="The Matchday Fuel logo with a basketball.">
+              <div class="sport-copy">
+                <h3 id="sport-basketball-title">Basketball</h3>
+                <ul class="pair">
+                  <li><img src="assets/drinks/full-court-press-600.webp" width="600" height="750" loading="lazy" alt=""><span class="pair-name">Full Court Press</span><span class="pair-flavor">Sea Salt Mocha cold brew</span></li>
+                  <li><img src="assets/drinks/buzzer-beater-600.webp" width="600" height="750" loading="lazy" alt=""><span class="pair-name">Buzzer Beater</span><span class="pair-flavor">Peach Orange Lotus energy</span></li>
+                </ul>
+              </div>
+            </article>
+            <article class="sport-step" id="sport-hockey" data-step="4" aria-labelledby="sport-hockey-title">
+              <img class="sport-logo" src="assets/logo/sport-hockey-480.webp" srcset="assets/logo/sport-hockey-480.webp 480w, assets/logo/sport-hockey.webp 960w" sizes="(min-width: 880px) 420px, 240px" width="960" height="960" loading="lazy" alt="The Matchday Fuel logo with a hockey puck and crossed sticks.">
+              <div class="sport-copy">
+                <h3 id="sport-hockey-title">Hockey</h3>
+                <ul class="pair">
+                  <li><img src="assets/drinks/power-play-600.webp" width="600" height="750" loading="lazy" alt=""><span class="pair-name">Power Play</span><span class="pair-flavor">Maple Oat Milk cold brew</span></li>
+                  <li><img src="assets/drinks/hat-trick-600.webp" width="600" height="750" loading="lazy" alt=""><span class="pair-name">Hat Trick</span><span class="pair-flavor">Triple Berry Lotus energy</span></li>
+                </ul>
+              </div>
+            </article>
+          </div>
+          <div class="scene-progress" aria-hidden="true"><span></span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Bottle scene: a 360-degree turn scrubbed by scroll -->
+    <section class="bottle" id="bottle" aria-labelledby="bottle-title" data-scene="bottle">
+      <div class="wrap section-intro">
+        <p class="eyebrow">Bottle</p>
+        <h2 id="bottle-title">Sealed for the walk back to your seat.</h2>
+        <p class="lead">Every drink comes in the same clear 16.9&nbsp;fl&nbsp;oz bottle, finished with an aluminum can-style top.</p>
+      </div>
+      <div class="bottle-track">
+        <div class="bottle-stage">
+          <figure class="bottle-figure">
+            <img class="bottle-still" src="assets/sequence/golden-boot/000.webp" width="1000" height="1250" alt="Golden Boot in its clear bottle with an aluminum can-style top. The label shows the soccer version of the Matchday Fuel logo and the flavor, Mango Passionfruit.">
+            <canvas class="bottle-canvas" aria-hidden="true"></canvas>
+          </figure>
+          <dl class="bottle-notes">
+            <div class="bottle-note" data-range="0">
+              <dt>Clear plastic</dt>
+              <dd>See the color of the drink before you buy it.</dd>
+            </div>
+            <div class="bottle-note" data-range="1">
+              <dt>Can-style top</dt>
+              <dd>Sealed at bottling. Pull the tab when you’re ready, and nothing spills on the stairs before then.</dd>
+            </div>
+            <div class="bottle-note" data-range="2">
+              <dt>16.9 fl oz</dt>
+              <dd>500&nbsp;mL, enough to last a full match.</dd>
+            </div>
+            <div class="bottle-note" data-range="3">
+              <dt>Served ice-cold</dt>
+              <dd>Straight from the cooler. No cup, no ice, no lid to lose.</dd>
+            </div>
+          </dl>
+        </div>
+      </div>
+    </section>
+
+    <!-- Lineup -->
+    <section class="lineup" id="lineup" aria-labelledby="lineup-title">
+      <div class="wrap">
+        <div class="section-head">
+          <div class="section-intro">
+            <p class="eyebrow">Lineup</p>
+            <h2 id="lineup-title">Ten drinks. Five sports.</h2>
+            <p class="lead">Five cold brews and five Lotus energy drinks. Every bottle holds 16.9&nbsp;fl&nbsp;oz.</p>
+          </div>
+          <fieldset class="segmented">
+            <legend class="visually-hidden">Show drinks</legend>
+            <input type="radio" name="kind" id="kind-all" value="all" checked>
+            <label for="kind-all">All</label>
+            <input type="radio" name="kind" id="kind-coldbrew" value="cold-brew">
+            <label for="kind-coldbrew">Cold Brew</label>
+            <input type="radio" name="kind" id="kind-energy" value="energy">
+            <label for="kind-energy">Lotus Energy</label>
+            <span class="segmented-thumb" aria-hidden="true"></span>
+          </fieldset>
+        </div>
+
+        <p class="menu-notice" data-menu-notice hidden></p>
+
+        <!-- Caffeine values are recipe targets. Replace them with lab-tested amounts before launch.
+             Square item names must match the drink names below for live prices and stock. -->
+        <div class="groups">
+          <div class="group" data-kind="cold-brew">
+            <div class="group-head">
+              <h3>Cold brew</h3>
+              <p>Steeped cold for 20 hours, then bottled. Ready to drink, no ice needed.</p>
+            </div>
+            <ul class="shelf" tabindex="0" aria-label="Cold brew drinks">
+              <li class="drink" data-drink="stoppage-time" data-name="Stoppage Time" data-line="Cold brew" data-flavor="Classic Black" data-sport="soccer" data-sample-price="600" style="--drink: #241208">
+                <img class="drink-photo" src="assets/drinks/stoppage-time-600.webp" srcset="assets/drinks/stoppage-time-600.webp 600w, assets/drinks/stoppage-time.webp 1200w" sizes="(min-width: 1000px) 220px, 64vw" width="1200" height="1500" loading="lazy" alt="Stoppage Time: black cold brew in a clear bottle with a soccer label.">
+                <p class="drink-sport"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-soccer"/></svg>Soccer</p>
+                <h4 class="drink-name">Stoppage Time</h4>
+                <p class="flavor"><span class="flavor-dot" aria-hidden="true"></span><span class="visually-hidden">Flavor: </span>Classic Black</p>
+                <p class="drink-desc">Black, extra strength. For the minutes added at the end.</p>
+                <p class="drink-facts"><span>Caffeine <b>300 mg</b></span><span class="price" data-price>$6.00</span></p>
+                <div class="drink-action" data-action></div>
+              </li>
+              <li class="drink" data-drink="power-play" data-name="Power Play" data-line="Cold brew" data-flavor="Maple Oat Milk" data-sport="hockey" data-sample-price="600" style="--drink: #A97B55">
+                <img class="drink-photo" src="assets/drinks/power-play-600.webp" srcset="assets/drinks/power-play-600.webp 600w, assets/drinks/power-play.webp 1200w" sizes="(min-width: 1000px) 220px, 64vw" width="1200" height="1500" loading="lazy" alt="Power Play: maple oat milk cold brew in a clear bottle with a hockey label.">
+                <p class="drink-sport"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-hockey"/></svg>Hockey</p>
+                <h4 class="drink-name">Power Play</h4>
+                <p class="flavor"><span class="flavor-dot" aria-hidden="true"></span><span class="visually-hidden">Flavor: </span>Maple Oat Milk</p>
+                <p class="drink-desc">Maple and oat milk. Plays like an extra skater.</p>
+                <p class="drink-facts"><span>Caffeine <b>200 mg</b></span><span class="price" data-price>$6.00</span></p>
+                <div class="drink-action" data-action></div>
+              </li>
+              <li class="drink" data-drink="seventh-inning-stretch" data-name="Seventh-Inning Stretch" data-line="Cold brew" data-flavor="Vanilla Sweet Cream" data-sport="baseball" data-sample-price="600" style="--drink: #C29A72">
+                <img class="drink-photo" src="assets/drinks/seventh-inning-stretch-600.webp" srcset="assets/drinks/seventh-inning-stretch-600.webp 600w, assets/drinks/seventh-inning-stretch.webp 1200w" sizes="(min-width: 1000px) 220px, 64vw" width="1200" height="1500" loading="lazy" alt="Seventh-Inning Stretch: vanilla sweet cream cold brew in a clear bottle with a baseball label.">
+                <p class="drink-sport"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-baseball"/></svg>Baseball</p>
+                <h4 class="drink-name">Seventh-Inning Stretch</h4>
+                <p class="flavor"><span class="flavor-dot" aria-hidden="true"></span><span class="visually-hidden">Flavor: </span>Vanilla Sweet Cream</p>
+                <p class="drink-desc">Vanilla sweet cream. Smooth enough for all nine innings.</p>
+                <p class="drink-facts"><span>Caffeine <b>180 mg</b></span><span class="price" data-price>$6.00</span></p>
+                <div class="drink-action" data-action></div>
+              </li>
+              <li class="drink" data-drink="hail-mary" data-name="Hail Mary" data-line="Cold brew" data-flavor="Salted Caramel" data-sport="football" data-sample-price="600" style="--drink: #9B6438">
+                <img class="drink-photo" src="assets/drinks/hail-mary-600.webp" srcset="assets/drinks/hail-mary-600.webp 600w, assets/drinks/hail-mary.webp 1200w" sizes="(min-width: 1000px) 220px, 64vw" width="1200" height="1500" loading="lazy" alt="Hail Mary: salted caramel cold brew in a clear bottle with a football label.">
+                <p class="drink-sport"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-football"/></svg>Football</p>
+                <h4 class="drink-name">Hail Mary</h4>
+                <p class="flavor"><span class="flavor-dot" aria-hidden="true"></span><span class="visually-hidden">Flavor: </span>Salted Caramel</p>
+                <p class="drink-desc">Salted caramel and whole milk. Worth the long throw.</p>
+                <p class="drink-facts"><span>Caffeine <b>190 mg</b></span><span class="price" data-price>$6.00</span></p>
+                <div class="drink-action" data-action></div>
+              </li>
+              <li class="drink" data-drink="full-court-press" data-name="Full Court Press" data-line="Cold brew" data-flavor="Sea Salt Mocha" data-sport="basketball" data-sample-price="600" style="--drink: #5A3220">
+                <img class="drink-photo" src="assets/drinks/full-court-press-600.webp" srcset="assets/drinks/full-court-press-600.webp 600w, assets/drinks/full-court-press.webp 1200w" sizes="(min-width: 1000px) 220px, 64vw" width="1200" height="1500" loading="lazy" alt="Full Court Press: sea salt mocha cold brew in a clear bottle with a basketball label.">
+                <p class="drink-sport"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-basketball"/></svg>Basketball</p>
+                <h4 class="drink-name">Full Court Press</h4>
+                <p class="flavor"><span class="flavor-dot" aria-hidden="true"></span><span class="visually-hidden">Flavor: </span>Sea Salt Mocha</p>
+                <p class="drink-desc">Dark cocoa mocha with sea salt. Pressure all game.</p>
+                <p class="drink-facts"><span>Caffeine <b>200 mg</b></span><span class="price" data-price>$6.00</span></p>
+                <div class="drink-action" data-action></div>
+              </li>
+            </ul>
+          </div>
+
+          <div class="group" data-kind="energy">
+            <div class="group-head">
+              <h3>Lotus energy</h3>
+              <p>Made with Lotus plant-based energy and lightly sparkling.</p>
+            </div>
+            <ul class="shelf" tabindex="0" aria-label="Lotus energy drinks">
+              <li class="drink" data-drink="golden-boot" data-name="Golden Boot" data-line="Lotus energy" data-flavor="Mango Passionfruit" data-sport="soccer" data-sample-price="650" style="--drink: #F2A81D">
+                <img class="drink-photo" src="assets/drinks/golden-boot-600.webp" srcset="assets/drinks/golden-boot-600.webp 600w, assets/drinks/golden-boot.webp 1200w" sizes="(min-width: 1000px) 220px, 64vw" width="1200" height="1500" loading="lazy" alt="Golden Boot: sparkling gold mango passionfruit Lotus energy in a clear bottle with a soccer label.">
+                <p class="drink-sport"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-soccer"/></svg>Soccer</p>
+                <h4 class="drink-name">Golden Boot</h4>
+                <p class="flavor"><span class="flavor-dot" aria-hidden="true"></span><span class="visually-hidden">Flavor: </span>Mango Passionfruit</p>
+                <p class="drink-desc">Named for the season’s top scorer.</p>
+                <p class="drink-facts"><span>Caffeine <b>160 mg</b></span><span class="price" data-price>$6.50</span></p>
+                <div class="drink-action" data-action></div>
+              </li>
+              <li class="drink" data-drink="grand-slam" data-name="Grand Slam" data-line="Lotus energy" data-flavor="Blue Raspberry Lemonade" data-sport="baseball" data-sample-price="650" style="--drink: #2F74D0">
+                <img class="drink-photo" src="assets/drinks/grand-slam-600.webp" srcset="assets/drinks/grand-slam-600.webp 600w, assets/drinks/grand-slam.webp 1200w" sizes="(min-width: 1000px) 220px, 64vw" width="1200" height="1500" loading="lazy" alt="Grand Slam: sparkling blue raspberry lemonade Lotus energy in a clear bottle with a baseball label.">
+                <p class="drink-sport"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-baseball"/></svg>Baseball</p>
+                <h4 class="drink-name">Grand Slam</h4>
+                <p class="flavor"><span class="flavor-dot" aria-hidden="true"></span><span class="visually-hidden">Flavor: </span>Blue Raspberry Lemonade</p>
+                <p class="drink-desc">Tart and bright. Clears the bases.</p>
+                <p class="drink-facts"><span>Caffeine <b>160 mg</b></span><span class="price" data-price>$6.50</span></p>
+                <div class="drink-action" data-action></div>
+              </li>
+              <li class="drink" data-drink="red-zone" data-name="Red Zone" data-line="Lotus energy" data-flavor="Strawberry Watermelon" data-sport="football" data-sample-price="650" style="--drink: #E0384B">
+                <img class="drink-photo" src="assets/drinks/red-zone-600.webp" srcset="assets/drinks/red-zone-600.webp 600w, assets/drinks/red-zone.webp 1200w" sizes="(min-width: 1000px) 220px, 64vw" width="1200" height="1500" loading="lazy" alt="Red Zone: sparkling strawberry watermelon Lotus energy in a clear bottle with a football label.">
+                <p class="drink-sport"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-football"/></svg>Football</p>
+                <h4 class="drink-name">Red Zone</h4>
+                <p class="flavor"><span class="flavor-dot" aria-hidden="true"></span><span class="visually-hidden">Flavor: </span>Strawberry Watermelon</p>
+                <p class="drink-desc">Made for the last twenty yards.</p>
+                <p class="drink-facts"><span>Caffeine <b>160 mg</b></span><span class="price" data-price>$6.50</span></p>
+                <div class="drink-action" data-action></div>
+              </li>
+              <li class="drink" data-drink="buzzer-beater" data-name="Buzzer Beater" data-line="Lotus energy" data-flavor="Peach Orange" data-sport="basketball" data-sample-price="650" style="--drink: #F27A2E">
+                <img class="drink-photo" src="assets/drinks/buzzer-beater-600.webp" srcset="assets/drinks/buzzer-beater-600.webp 600w, assets/drinks/buzzer-beater.webp 1200w" sizes="(min-width: 1000px) 220px, 64vw" width="1200" height="1500" loading="lazy" alt="Buzzer Beater: sparkling peach orange Lotus energy in a clear bottle with a basketball label.">
+                <p class="drink-sport"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-basketball"/></svg>Basketball</p>
+                <h4 class="drink-name">Buzzer Beater</h4>
+                <p class="flavor"><span class="flavor-dot" aria-hidden="true"></span><span class="visually-hidden">Flavor: </span>Peach Orange</p>
+                <p class="drink-desc">Good to the final second.</p>
+                <p class="drink-facts"><span>Caffeine <b>120 mg</b></span><span class="price" data-price>$6.50</span></p>
+                <div class="drink-action" data-action></div>
+              </li>
+              <li class="drink" data-drink="hat-trick" data-name="Hat Trick" data-line="Lotus energy" data-flavor="Triple Berry" data-sport="hockey" data-sample-price="650" style="--drink: #7B3FA6">
+                <img class="drink-photo" src="assets/drinks/hat-trick-600.webp" srcset="assets/drinks/hat-trick-600.webp 600w, assets/drinks/hat-trick.webp 1200w" sizes="(min-width: 1000px) 220px, 64vw" width="1200" height="1500" loading="lazy" alt="Hat Trick: sparkling triple berry Lotus energy in a clear bottle with a hockey label.">
+                <p class="drink-sport"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-hockey"/></svg>Hockey</p>
+                <h4 class="drink-name">Hat Trick</h4>
+                <p class="flavor"><span class="flavor-dot" aria-hidden="true"></span><span class="visually-hidden">Flavor: </span>Triple Berry</p>
+                <p class="drink-desc">Blackberry, blueberry, and raspberry. Three berries, one bottle.</p>
+                <p class="drink-facts"><span>Caffeine <b>160 mg</b></span><span class="price" data-price>$6.50</span></p>
+                <div class="drink-action" data-action></div>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <p class="footnote">Caffeine amounts are recipe targets. Final amounts will be printed on every bottle.</p>
+      </div>
+    </section>
+
+    <!-- Schedule -->
+    <section class="schedule" id="schedule" aria-labelledby="schedule-title">
+      <div class="wrap">
+        <div class="section-intro">
+          <p class="eyebrow">Schedule</p>
+          <h2 id="schedule-title">Find the stand.</h2>
+          <p class="lead">Upcoming stops for the Matchday Fuel stand. Order ahead for any stop and skip the line.</p>
+        </div>
+        <p class="schedule-notice" data-schedule-notice hidden></p>
+        <ol class="stops" data-stops aria-busy="true">
+          <li class="stops-loading">Loading the schedule…</li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- Order ahead -->
+    <section class="order" id="order" aria-labelledby="order-title">
+      <div class="wrap">
+        <div class="section-intro">
+          <p class="eyebrow">Order ahead</p>
+          <h2 id="order-title">Order ahead. Grab and go.</h2>
+          <p class="lead">Pick a stop, choose your drinks, and pay on Square. Your order will be waiting at the stand.</p>
+        </div>
+
+        <div class="order-confirmed" data-order-confirmed hidden tabindex="-1">
+          <svg class="icon confirmed-icon" aria-hidden="true" focusable="false"><use href="#i-check"/></svg>
+          <h3>Order placed</h3>
+          <p>Give your name at the Matchday Fuel stand to pick it up. Square emailed your receipt.</p>
+          <button class="btn btn-secondary" type="button" data-new-order>Start a New Order</button>
+        </div>
+
+        <p class="order-notice" data-order-notice hidden></p>
+
+        <form class="order-grid" id="order-form" novalidate data-order-form>
+          <div class="order-steps">
+            <fieldset class="order-step">
+              <legend><span class="step-label">Pickup</span></legend>
+              <div class="stop-choices" data-stop-choices role="radiogroup" aria-label="Pickup stop">
+                <p class="muted">Loading stops…</p>
+              </div>
+              <p class="field-error" id="order-stop-error" hidden></p>
+              <div class="field">
+                <label for="order-time">Pickup time</label>
+                <div class="select-wrap">
+                  <select id="order-time" name="pickupTime" data-pickup-time disabled>
+                    <option value="asap">As soon as possible</option>
+                  </select>
+                </div>
+              </div>
+            </fieldset>
+
+            <fieldset class="order-step">
+              <legend><span class="step-label">Drinks</span></legend>
+              <ul class="order-items" data-order-items></ul>
+              <p class="field-error" id="order-items-error" hidden></p>
+            </fieldset>
+
+            <fieldset class="order-step">
+              <legend><span class="step-label">Contact</span></legend>
+              <div class="field-row">
+                <div class="field">
+                  <label for="order-name">Name for pickup</label>
+                  <input id="order-name" name="name" type="text" autocomplete="name" maxlength="60" placeholder="Your name" aria-describedby="order-name-error">
+                  <p class="field-error" id="order-name-error" hidden></p>
+                </div>
+                <div class="field">
+                  <label for="order-email">Email</label>
+                  <input id="order-email" name="email" type="email" autocomplete="email" inputmode="email" placeholder="name@example.com" aria-describedby="order-email-hint order-email-error">
+                  <p class="hint" id="order-email-hint">Square sends your receipt here.</p>
+                  <p class="field-error" id="order-email-error" hidden></p>
+                </div>
+              </div>
+              <div class="field">
+                <label for="order-phone">Phone <span class="optional">(optional with an email)</span></label>
+                <input id="order-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" placeholder="(555) 555-0123" aria-describedby="order-phone-error">
+                <p class="field-error" id="order-phone-error" hidden></p>
+              </div>
+            </fieldset>
+          </div>
+
+          <aside class="order-summary" aria-labelledby="summary-title">
+            <h3 id="summary-title">Your order</h3>
+            <p class="summary-stop" data-summary-stop>No stop selected</p>
+            <ul class="summary-lines" data-summary-lines>
+              <li class="muted">No drinks yet</li>
+            </ul>
+            <dl class="summary-totals">
+              <div><dt>Subtotal</dt><dd data-subtotal>$0.00</dd></div>
+              <div class="muted"><dt>Tax</dt><dd>Added at checkout</dd></div>
+            </dl>
+            <button class="btn btn-primary btn-block" type="submit" data-checkout>Continue to Payment</button>
+            <p class="summary-note">You’ll pay on Square’s secure checkout page.</p>
+            <p class="form-status" data-order-status role="status" hidden></p>
+          </aside>
+        </form>
+        <p class="visually-hidden" aria-live="polite" data-cart-announcer></p>
+      </div>
+    </section>
+
+    <!-- Venues -->
+    <section class="venues" id="venues" aria-labelledby="venues-title">
+      <div class="wrap venues-grid">
+        <div class="venues-copy">
+          <p class="eyebrow">Venues</p>
+          <h2 id="venues-title">Bring Matchday Fuel to your venue.</h2>
+          <p class="lead">Matchday Fuel sells where fans already are: stadiums, ballparks, rinks, field complexes, and rec centers. Send a few details and the team will reply with a plan for your season.</p>
+          <ul class="offers">
+            <li>
+              <h3>Concession stands</h3>
+              <p>Cold-packed bottles for your coolers, restocked on your schedule.</p>
+            </li>
+            <li>
+              <h3>Game days and tournaments</h3>
+              <p>A Matchday Fuel cart, staffed and stocked for the event.</p>
+            </li>
+            <li>
+              <h3>Gyms and rec centers</h3>
+              <p>A branded cooler near the courts and fields, restocked weekly.</p>
+            </li>
+          </ul>
+        </div>
+
+        <form class="booking" id="book" novalidate aria-labelledby="book-title">
+          <h3 id="book-title">Book Matchday Fuel</h3>
+          <div class="field-row">
+            <div class="field">
+              <label for="book-name">Name</label>
+              <input id="book-name" name="name" type="text" autocomplete="name" placeholder="Your name" required aria-describedby="book-name-error">
+              <p class="field-error" id="book-name-error" hidden></p>
+            </div>
+            <div class="field">
+              <label for="book-email">Email</label>
+              <input id="book-email" name="email" type="email" autocomplete="email" inputmode="email" placeholder="name@example.com" required aria-describedby="book-email-error">
+              <p class="field-error" id="book-email-error" hidden></p>
+            </div>
+          </div>
+          <div class="field-row">
+            <div class="field">
+              <label for="book-venue">Venue or organization</label>
+              <input id="book-venue" name="venue" type="text" autocomplete="organization" placeholder="Riverside Sports Complex" required aria-describedby="book-venue-error">
+              <p class="field-error" id="book-venue-error" hidden></p>
+            </div>
+            <div class="field">
+              <label for="book-type">Venue type</label>
+              <div class="select-wrap">
+                <select id="book-type" name="venue_type" required aria-describedby="book-type-error">
+                  <option value="">Choose one</option>
+                  <option>Stadium or ballpark</option>
+                  <option>Arena or rink</option>
+                  <option>Fields or sports complex</option>
+                  <option>Gym or rec center</option>
+                  <option>Tournament or event</option>
+                </select>
+              </div>
+              <p class="field-error" id="book-type-error" hidden></p>
+            </div>
+          </div>
+          <div class="field">
+            <label for="book-message">Message <span class="optional">(optional)</span></label>
+            <textarea id="book-message" name="message" rows="4" placeholder="Season dates, expected crowd, anything else"></textarea>
+          </div>
+          <div class="form-actions">
+            <button class="btn btn-primary" type="submit">Send Request</button>
+          </div>
+          <p class="form-status" id="book-status" role="status" hidden></p>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap footer-grid">
+      <a class="wordmark" href="#top"><span>Matchday</span><span>Fuel</span></a>
+      <nav aria-label="Footer">
+        <ul class="footer-links">
+          <li><a href="#lineup">Lineup</a></li>
+          <li><a href="#schedule">Schedule</a></li>
+          <li><a href="#order">Order Ahead</a></li>
+          <li><a href="#venues">Venues</a></li>
+        </ul>
+      </nav>
+      <p class="legal">© 2026 Matchday Fuel. Lotus is a trademark of its owner.</p>
+    </div>
+  </footer>
+
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>

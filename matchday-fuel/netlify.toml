@@ -1,0 +1,12 @@
+# Set the site's base directory to matchday-fuel in Netlify; these paths are relative to it.
+[build]
+  publish = "public"
+  functions = "netlify/functions"
+
+[functions]
+  node_bundler = "esbuild"
+
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=604800"

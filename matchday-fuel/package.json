@@ -1,0 +1,15 @@
+{
+  "name": "matchday-fuel",
+  "private": true,
+  "type": "module",
+  "engines": { "node": ">=20" },
+  "scripts": {
+    "dev": "node server/dev-server.mjs",
+    "test": "node --test server/test/",
+    "render": "node tools/render/render.mjs",
+    "logos": "python3 tools/logos/make_sport_logos.py"
+  },
+  "devDependencies": {
+    "three": "0.186.1"
+  }
+}
