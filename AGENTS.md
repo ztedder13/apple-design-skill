@@ -37,6 +37,7 @@ a generated lookup table, and the script that regenerates all of it.
 | `references/hig/liquid-glass.md` | Curated Liquid Glass guide; the script never touches it | Yes |
 | `references/cross-platform.md` | Apple's vocabulary and conventions for Flutter, React Native, Tauri, and Electron | Yes |
 | `scripts/pull-hig.mjs` | Pull script, Node 18 or newer, no dependencies | Yes |
+| `matchday-fuel/` | Example website designed with the skill; see its README | Yes |
 
 ## Refreshing the references
 
