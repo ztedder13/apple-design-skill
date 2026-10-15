@@ -153,7 +153,7 @@ function readCustomer(raw) {
   const email = optionalString(raw.email, "customer.email", "Enter an email address like name@example.com.");
   const phoneInput = optionalString(raw.phone, "customer.phone", "Enter a 10-digit phone number, including the area code.");
   if (!email && !phoneInput) {
-    throw invalid("customer.email", "Enter an email address or a phone number, so we can reach you about your order.");
+    throw invalid("customer.email", "Enter an email address or a phone number for updates about your order.");
   }
   if (email && !isValidEmail(email)) throw invalid("customer.email", "Enter an email address like name@example.com.");
   let phone = "";

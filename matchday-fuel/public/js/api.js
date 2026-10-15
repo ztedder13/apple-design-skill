@@ -1,15 +1,24 @@
 // Data for the page: the menu (prices and stock from Square), the schedule, and checkout.
-// When the site runs without its server (opened as a file or in a preview), each call falls back
-// to sample data so the page still works, and `mode` tells the page to say so.
+// When the site runs without its server (opened as a file or in a preview), the menu and
+// schedule fall back to samples so the page still works, and `mode` tells the page to say so.
+// When the server is there but reports a problem, the page shows that problem instead of
+// pretending with samples.
 
 import { DEFAULT_TIME_ZONE, isValidTimeZone, parseLocalDateTime, zonedWallTimeToUtc } from "./format.js";
 
 const SAMPLE_STOCK = { "hat-trick": 0, "red-zone": 3 };
+export const DEFAULT_CUTOFF_MINUTES = 15;
 
+// Resolves to { response, data } when the server answered with JSON, whatever the status.
+// Throws when there is no server or the reply isn't JSON.
 async function getJson(url, options) {
   const response = await fetch(url, { headers: { Accept: "application/json" }, ...options });
   const type = response.headers.get("content-type") || "";
-  if (!type.includes("application/json")) throw new Error(`Unexpected response from ${url}`);
+  if (!type.includes("application/json")) {
+    const error = new Error(`Unexpected response from ${url}`);
+    error.status = response.status;
+    throw error;
+  }
   return { response, data: await response.json() };
 }
 
@@ -32,13 +41,20 @@ function sampleMenu() {
 }
 
 export async function loadMenu() {
+  let result;
   try {
-    const { response, data } = await getJson("/api/menu");
-    if (response.ok && Array.isArray(data.items)) return data;
+    result = await getJson("/api/menu");
   } catch {
-    // No server: fall through to samples.
+    return sampleMenu();
   }
-  return sampleMenu();
+  const { response, data } = result;
+  if (response.ok && Array.isArray(data.items)) return data;
+  return {
+    mode: "unavailable",
+    currency: "USD",
+    items: [],
+    error: data?.error || "Prices and stock can’t be loaded right now. Try again in a moment.",
+  };
 }
 
 // Schedule ------------------------------------------------------------------------------------
@@ -91,40 +107,60 @@ function sampleSchedule(now) {
 }
 
 export async function loadSchedule(now = new Date()) {
+  let result = null;
   try {
-    const { response, data } = await getJson("/api/schedule");
+    result = await getJson("/api/schedule");
+  } catch {
+    // No server: try the schedule file next.
+  }
+  if (result) {
+    const { response, data } = result;
     if (response.ok && Array.isArray(data.events)) {
       return {
         ...data,
+        orderCutoffMinutes: Number.isFinite(data.orderCutoffMinutes) ? data.orderCutoffMinutes : DEFAULT_CUTOFF_MINUTES,
         events: data.events.map((event) => ({ ...event, start: new Date(event.start), end: new Date(event.end) })),
       };
     }
-  } catch {
-    // No server: try the schedule file next.
+    return {
+      mode: "unavailable",
+      timezone: DEFAULT_TIME_ZONE,
+      orderCutoffMinutes: DEFAULT_CUTOFF_MINUTES,
+      events: [],
+      error: data?.error || "The schedule can’t be loaded right now. Try again in a moment.",
+    };
   }
   try {
     const { response, data } = await getJson("data/schedule.json");
     if (response.ok) {
       const schedule = normalizeFileSchedule(data, now);
-      if (schedule.events.length) return schedule;
+      if (schedule.events.length) return { ...schedule, orderCutoffMinutes: DEFAULT_CUTOFF_MINUTES };
     }
   } catch {
     // No file either (for example a preview): use samples.
   }
-  return sampleSchedule(now);
+  return { ...sampleSchedule(now), orderCutoffMinutes: DEFAULT_CUTOFF_MINUTES };
 }
 
 // Checkout ------------------------------------------------------------------------------------
 
-export async function startCheckout(payload) {
+// Resolves to { status, data }. status is 0 when the server can't be reached and -1 when it
+// took too long; data is null when the reply wasn't JSON.
+export async function startCheckout(payload, { timeoutMs = 20_000 } = {}) {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), timeoutMs);
   try {
     const { response, data } = await getJson("/api/checkout", {
       method: "POST",
       headers: { Accept: "application/json", "Content-Type": "application/json" },
       body: JSON.stringify(payload),
+      signal: controller.signal,
     });
     return { status: response.status, data };
-  } catch {
-    return { status: 0, data: null };
+  } catch (error) {
+    if (error.name === "AbortError") return { status: -1, data: null };
+    return { status: error.status || 0, data: null };
+  } finally {
+    clearTimeout(timer);
   }
 }

@@ -2,7 +2,7 @@
 // Regenerates every drink image in the SPEC asset contract:
 //   public/assets/drinks/{key}.webp (1200x1500) and {key}-600.webp
 //   public/assets/lineup.webp (2400x1000) and lineup-1200.webp
-//   public/assets/sequence/golden-boot/000.webp ... 071.webp (1000x1250)
+//   public/assets/sequence/golden-boot/000.webp ... 071.webp (1000x1250), plus 720/ (720x900)
 //
 // How: a small static server serves the project, headless Chromium (Playwright, SwiftShader
 // WebGL2) opens tools/render/render.html, which renders each shot with three.js at 2x and
@@ -215,6 +215,10 @@ async function main() {
           outputs: [{
             path: path.join(ASSETS, 'sequence', key, `${name}.webp`),
             width, height, quality: QUALITY.sequence, maxBytes: SEQUENCE_MAX_BYTES,
+          }, {
+            // Phones: a 720 px set, which a 2x canvas on a phone can't tell apart and decodes faster.
+            path: path.join(ASSETS, 'sequence', key, '720', `${name}.webp`),
+            width: 720, height: 900, quality: QUALITY.sequence, maxBytes: SEQUENCE_MAX_BYTES,
           }],
         });
       }

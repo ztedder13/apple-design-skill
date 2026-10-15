@@ -85,11 +85,11 @@ All images sit on pure white `#FFFFFF` unless noted. WebP unless noted.
 | `public/assets/logo/matchday-fuel-1200.jpg` | 1200 px | Social preview |
 | `public/assets/logo/apple-touch-icon.png` | 180 px | Home-screen icon |
 | `public/assets/logo/sport-{soccer,baseball,football,basketball,hockey}.webp` | 960 px | Logo variant with that sport's ball |
-| `public/assets/logo/sport-{sport}-480.webp` | 480 px | Same, small |
+| `public/assets/logo/sport-{sport}-720.webp`, `-480.webp` | 720, 480 px | Same, smaller (also `matchday-fuel-720.webp`) |
 | `tools/logos/out/sport-{sport}.png` | 1254 px | Lossless masters, also used for label art |
 | `public/assets/drinks/{key}.webp` | 1200x1500 | Product shot, 3/4 front view, label facing camera |
 | `public/assets/drinks/{key}-600.webp` | 600x750 | Same, small |
-| `public/assets/sequence/golden-boot/000.webp` … `071.webp` | 1000x1250 | Golden Boot turning 360 degrees in 5-degree steps; frame 000 shows the label front, same framing every frame |
+| `public/assets/sequence/golden-boot/000.webp` … `071.webp` (and `720/` at 720x900 for phones) | 1000x1250 | Golden Boot turning 360 degrees in 5-degree steps; frame 000 shows the label front, same framing every frame |
 | `public/assets/lineup.webp` | 2400x1000 | All ten bottles in one row, cold brews left, Lotus right, same order as the table |
 | `public/assets/lineup-1200.webp` | 1200x500 | Same, small |
 

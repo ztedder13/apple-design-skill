@@ -382,6 +382,13 @@ describe("handlers", () => {
     assert.ok(Array.isArray(body.events));
   });
 
+  test("handleSchedule sends the order cutoff checkout uses, so the page offers the same stops", async (t) => {
+    t.mock.method(globalThis, "fetch", fakeFetch({ [FILE_URL]: fileRoute }));
+    assert.equal((await (await handleSchedule(request, {})).json()).orderCutoffMinutes, 15);
+    clearScheduleCache();
+    assert.equal((await (await handleSchedule(request, { ORDER_CUTOFF_MINUTES: "30" })).json()).orderCutoffMinutes, 30);
+  });
+
   test("handleSchedule refuses other methods", async () => {
     await assert.rejects(handleSchedule(new Request(`${ORIGIN}/api/schedule`, { method: "POST" }), {}),
       (error) => error instanceof HttpError && error.status === 405);

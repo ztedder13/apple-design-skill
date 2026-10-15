@@ -2,11 +2,14 @@
 
 import { loadMenu, loadSchedule } from "./api.js";
 import { initBooking } from "./booking.js";
-import { initLineup } from "./lineup.js";
+import { drinkLimit, initLineup } from "./lineup.js";
 import { initOrder } from "./order.js";
 import { renderSchedule } from "./schedule.js";
 import { initScenes } from "./scenes.js";
 import { createCart } from "./store.js";
+
+const MENU_RETRY_MS = 30_000;
+const REFRESH_MS = 60_000;
 
 const cart = createCart();
 const state = { menu: null, schedule: null };
@@ -38,29 +41,60 @@ function renderCount() {
 cart.subscribe(renderCount);
 renderCount();
 
+// Another tab changed the saved order.
+window.addEventListener("storage", (event) => {
+  if (event.key === cart.storageKey) cart.reload();
+});
+
 initScenes();
 initBooking();
 const lineup = initLineup({ cart, state, announce });
 const order = initOrder({ cart, state, announce });
 
-loadMenu().then((menuData) => {
+function showSchedule() {
+  renderSchedule({ schedule: state.schedule, onOrder: (id) => order.selectStop(id) });
+}
+
+async function refreshMenu() {
+  const menuData = await loadMenu();
   state.menu = { ...menuData, byKey: new Map(menuData.items.map((item) => [item.key, item])) };
   const notice = document.querySelector("[data-menu-notice]");
-  const live = menuData.mode === "square";
-  notice.hidden = live;
-  notice.textContent = live ? "" : "Prices and stock are samples until online ordering opens.";
-  // Drop anything in a saved order that is no longer on the menu or is now sold out.
-  for (const [key, qty] of cart.entries()) {
-    const item = state.menu.byKey.get(key);
-    const limit = !item || item.soldOut ? 0 : item.available == null ? qty : Math.min(qty, item.available);
-    if (limit !== qty) cart.set(key, limit);
+  const mode = menuData.mode;
+  notice.hidden = mode === "square";
+  notice.textContent = mode === "unavailable" ? menuData.error : mode === "square" ? "" : "Prices and stock are samples until online ordering opens.";
+
+  if (mode !== "unavailable") {
+    // Trim anything in a saved order that is no longer on the menu or is short on stock, and say so.
+    const changed = [];
+    for (const [key, qty] of cart.entries()) {
+      const item = state.menu.byKey.get(key);
+      const limit = Math.min(qty, drinkLimit(item));
+      if (limit === qty) continue;
+      cart.set(key, limit);
+      const name = item?.name || document.querySelector(`.drink[data-drink="${key}"]`)?.dataset.name || key;
+      changed.push(limit ? `${name} cut to ${limit}` : `${name} removed (sold out)`);
+    }
+    if (changed.length) order.notify(`Your saved order changed: ${changed.join(", ")}.`);
+  } else {
+    setTimeout(refreshMenu, MENU_RETRY_MS);
   }
   lineup.render();
   order.render();
-});
+}
+
+refreshMenu();
 
 loadSchedule().then((schedule) => {
   state.schedule = schedule;
-  renderSchedule({ schedule, onOrder: (id) => order.selectStop(id) });
+  showSchedule();
   order.render();
 });
+
+// Keep "Open now", closed stops, and pickup times current while the page stays open.
+function refreshTimes() {
+  if (!state.schedule) return;
+  showSchedule();
+  order.render();
+}
+setInterval(refreshTimes, REFRESH_MS);
+document.addEventListener("visibilitychange", () => { if (!document.hidden) refreshTimes(); });

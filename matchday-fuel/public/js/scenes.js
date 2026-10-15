@@ -1,47 +1,66 @@
 // Apple-style scroll scenes. Each scene is a tall track with a sticky stage; scroll position
-// inside the track drives what the stage shows. With Reduce Motion on, or without script, the
-// same content appears as an ordinary static section (accessibility.md › Cognitive,
-// motion.md › Best practices: make motion optional).
+// inside the track drives what the stage shows. With Reduce Motion on, on very short screens, or
+// without script, the same content appears as an ordinary static section
+// (accessibility.md › Cognitive, motion.md › Best practices: make motion optional).
 
 const FRAME_COUNT = 72;
-const framePath = (i) => `assets/sequence/golden-boot/${String(i).padStart(3, "0")}.webp`;
+const SEQUENCE = "assets/sequence/golden-boot";
 
 function clamp(value, min, max) {
   return Math.min(max, Math.max(min, value));
 }
 
+function progressOf(track) {
+  const distance = track.offsetHeight - window.innerHeight;
+  return distance > 0 ? clamp(-track.getBoundingClientRect().top / distance, 0, 1) : 0;
+}
+
+function scrollToProgress(track, progress, behavior = "smooth") {
+  const top = window.scrollY + track.getBoundingClientRect().top;
+  const distance = track.offsetHeight - window.innerHeight;
+  window.scrollTo({ top: top + distance * progress, behavior });
+}
+
 // Calls onProgress(0..1) for the track while it is near the viewport, at most once a frame.
+// When the window width changes (a phone rotated), the track's height changes too, so the
+// reader is put back at the same point in the scene instead of a different step.
 function trackProgress(track, onProgress) {
   let frame = 0;
   let active = false;
+  let last = progressOf(track);
+  let width = window.innerWidth;
   const update = () => {
     frame = 0;
-    const rect = track.getBoundingClientRect();
-    const distance = track.offsetHeight - window.innerHeight;
-    onProgress(distance > 0 ? clamp(-rect.top / distance, 0, 1) : 0);
+    last = progressOf(track);
+    onProgress(last);
   };
   const schedule = () => { if (active && !frame) frame = requestAnimationFrame(update); };
+  const onResize = () => {
+    if (window.innerWidth !== width && last > 0 && last < 1) {
+      const keep = last;
+      requestAnimationFrame(() => scrollToProgress(track, keep, "auto"));
+    }
+    width = window.innerWidth;
+    schedule();
+  };
   const observer = new IntersectionObserver(([entry]) => {
     active = entry.isIntersecting;
     if (active) schedule();
   }, { rootMargin: "50% 0px" });
   observer.observe(track);
   window.addEventListener("scroll", schedule, { passive: true });
-  window.addEventListener("resize", schedule);
+  window.addEventListener("resize", onResize);
   active = true;
   update();
-  return () => {
-    observer.disconnect();
-    window.removeEventListener("scroll", schedule);
-    window.removeEventListener("resize", schedule);
-    if (frame) cancelAnimationFrame(frame);
+  return {
+    progress: () => last,
+    stop() {
+      observer.disconnect();
+      window.removeEventListener("scroll", schedule);
+      window.removeEventListener("resize", onResize);
+      if (frame) cancelAnimationFrame(frame);
+    },
   };
-}
-
-function scrollToProgress(track, progress) {
-  const top = window.scrollY + track.getBoundingClientRect().top;
-  const distance = track.offsetHeight - window.innerHeight;
-  window.scrollTo({ top: top + distance * progress, behavior: "smooth" });
 }
 
 // Every sport gets its own ball ----------------------------------------------------------------
@@ -51,7 +70,7 @@ function sportsScene(section) {
   const steps = [...section.querySelectorAll(".sport-step")];
   const links = [...section.querySelectorAll("[data-step-link]")];
   const bar = section.querySelector(".scene-progress");
-  let stop = null;
+  let tracker = null;
   let current = -1;
 
   const show = (index) => {
@@ -73,20 +92,26 @@ function sportsScene(section) {
   };
 
   return {
+    // Where the reader is, so switching modes can keep them on the same sport.
+    position: () => (tracker && tracker.progress() > 0 && tracker.progress() < 1 ? { step: current } : null),
+    restore({ step }) {
+      if (tracker) scrollToProgress(track, (step + 0.5) / steps.length, "auto");
+      else steps[step]?.scrollIntoView({ block: "start" });
+    },
     enable() {
-      if (stop) return;
+      if (tracker) return;
       section.classList.add("is-scrub");
       section.querySelectorAll("img[loading=lazy]").forEach((img) => { img.loading = "eager"; });
       links.forEach((link) => link.addEventListener("click", onLink));
-      stop = trackProgress(track, (p) => {
+      tracker = trackProgress(track, (p) => {
         bar.style.setProperty("--p", p.toFixed(4));
         show(Math.min(steps.length - 1, Math.floor(p * steps.length)));
       });
     },
     disable() {
-      if (!stop) return;
-      stop();
-      stop = null;
+      if (!tracker) return;
+      tracker.stop();
+      tracker = null;
       current = -1;
       section.classList.remove("is-scrub");
       steps.forEach((step) => step.classList.remove("is-active"));
@@ -106,9 +131,20 @@ function bottleScene(section) {
   const frames = new Array(FRAME_COUNT);
   let wanted = 0;
   let drawn = -1;
-  let stop = null;
+  let tracker = null;
   let loading = false;
+  let near = false;
+  let nearTimer = 0;
   let resizeObserver = null;
+  let pump = null;
+
+  // Phones get 720 px frames: a capped 2x canvas can't use more, and they decode faster.
+  let framePath = null;
+  const chooseFrames = () => {
+    const ratio = Math.min(window.devicePixelRatio || 1, 2);
+    const small = figure.clientWidth * ratio <= 760;
+    framePath = (i) => `${SEQUENCE}/${small ? "720/" : ""}${String(i).padStart(3, "0")}.webp`;
+  };
 
   const sizeCanvas = () => {
     const ratio = Math.min(window.devicePixelRatio || 1, 2);
@@ -141,39 +177,56 @@ function bottleScene(section) {
     figure.classList.add("has-frames");
   }
 
-  // Load a coarse set of angles first so scrubbing works early, then fill in the rest.
+  // Load a coarse set of angles first, at high priority, so scrubbing works early; then fill in
+  // the rest. Loading pauses while the section is far away and resumes when it comes back.
   function preload() {
-    if (loading) return;
-    loading = true;
-    const order = [];
-    for (const step of [18, 6, 3, 1]) {
-      for (let i = 0; i < FRAME_COUNT; i += step) if (!order.includes(i)) order.push(i);
+    if (!loading) {
+      loading = true;
+      if (!framePath) chooseFrames();
+      const order = [];
+      for (const step of [18, 6, 3, 1]) {
+        for (let i = 0; i < FRAME_COUNT; i += step) if (!order.includes(i)) order.push(i);
+      }
+      let next = 0;
+      let inFlight = 0;
+      pump = () => {
+        while (near && inFlight < 4 && next < order.length) {
+          const i = order[next];
+          const image = new Image();
+          image.decoding = "async";
+          image.fetchPriority = next < 4 ? "high" : "low";
+          inFlight += 1;
+          next += 1;
+          image.onload = image.onerror = () => { inFlight -= 1; draw(); pump(); };
+          image.src = framePath(i);
+          frames[i] = image;
+        }
+      };
     }
-    let next = 0;
-    const pump = () => {
-      if (next >= order.length) return;
-      const i = order[next++];
-      const image = new Image();
-      image.decoding = "async";
-      image.onload = image.onerror = () => { draw(); pump(); };
-      image.src = framePath(i);
-      frames[i] = image;
-    };
-    for (let lane = 0; lane < 4; lane += 1) pump();
+    pump();
   }
 
+  // Ignore fly-bys (for example tapping Order Ahead at the top of the page): start loading only
+  // when the section has stayed near the viewport for a moment.
   const nearObserver = new IntersectionObserver(([entry]) => {
-    if (entry.isIntersecting && stop) preload();
+    clearTimeout(nearTimer);
+    near = entry.isIntersecting;
+    if (near && tracker) nearTimer = setTimeout(preload, 400);
   }, { rootMargin: "150% 0px" });
 
   return {
+    position: () => (tracker && tracker.progress() > 0 && tracker.progress() < 1 ? { progress: tracker.progress() } : null),
+    restore({ progress }) {
+      if (tracker) scrollToProgress(track, progress, "auto");
+      else section.scrollIntoView({ block: "start" });
+    },
     enable() {
-      if (stop) return;
+      if (tracker) return;
       section.classList.add("is-scrub");
       resizeObserver = new ResizeObserver(sizeCanvas);
       resizeObserver.observe(figure);
       nearObserver.observe(section);
-      stop = trackProgress(track, (p) => {
+      tracker = trackProgress(track, (p) => {
         wanted = Math.round(p * (FRAME_COUNT - 1));
         draw();
         const active = Math.min(notes.length - 1, Math.floor(p * notes.length));
@@ -181,9 +234,11 @@ function bottleScene(section) {
       });
     },
     disable() {
-      if (!stop) return;
-      stop();
-      stop = null;
+      if (!tracker) return;
+      tracker.stop();
+      tracker = null;
+      near = false;
+      clearTimeout(nearTimer);
       resizeObserver?.disconnect();
       nearObserver.disconnect();
       section.classList.remove("is-scrub");
@@ -200,8 +255,15 @@ export function initScenes() {
   if (sports) scenes.push(sportsScene(sports));
   if (bottle) scenes.push(bottleScene(bottle));
 
-  const reduce = window.matchMedia("(prefers-reduced-motion: reduce)");
-  const apply = () => scenes.forEach((scene) => (reduce.matches ? scene.disable() : scene.enable()));
-  reduce.addEventListener?.("change", apply);
+  // Static sections for Reduce Motion and for screens too short to pin anything.
+  const staticMode = window.matchMedia("(prefers-reduced-motion: reduce), (max-height: 359px)");
+  let first = true;
+  const apply = () => {
+    const pinned = first ? null : scenes.map((scene) => [scene, scene.position()]).find(([, at]) => at);
+    scenes.forEach((scene) => (staticMode.matches ? scene.disable() : scene.enable()));
+    if (pinned) requestAnimationFrame(() => pinned[0].restore(pinned[1]));
+    first = false;
+  };
+  staticMode.addEventListener?.("change", apply);
   apply();
 }

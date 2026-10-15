@@ -44,12 +44,18 @@ export function stepper({ name, qty, max, onChange }) {
   );
 }
 
-// After a stepper re-renders, keep keyboard focus on the same button instead of losing it.
+// After a stepper re-renders, keep keyboard focus in the same drink's stepper: on the same
+// button if it is still enabled, otherwise on the other button of that stepper.
 export function keepFocus(container, render) {
   const active = document.activeElement;
-  const label = container.contains(active) ? active.getAttribute("aria-label") : null;
+  if (!container.contains(active)) return render();
+  const label = active.getAttribute("aria-label");
+  const groupLabel = active.closest("[role=group]")?.getAttribute("aria-label")
+    || active.closest("[data-drink-row]")?.dataset.drinkRow;
   render();
-  if (!label) return;
-  const buttons = [...container.querySelectorAll("button:not([disabled])")];
-  (buttons.find((button) => button.getAttribute("aria-label") === label) || buttons[0])?.focus();
+  const enabled = (root) => [...root.querySelectorAll("button:not([disabled])")];
+  const group = groupLabel && [...container.querySelectorAll("[role=group], [data-drink-row]")]
+    .find((node) => node.getAttribute("aria-label") === groupLabel || node.dataset.drinkRow === groupLabel);
+  const pool = group ? enabled(group) : enabled(container);
+  (pool.find((button) => button.getAttribute("aria-label") === label) || pool[0])?.focus();
 }

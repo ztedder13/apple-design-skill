@@ -56,8 +56,10 @@ export function dateTile(date, timeZone) {
   return { month: get({ month: "short" }), day: get({ day: "numeric" }), weekday: get({ weekday: "short" }) };
 }
 
-export function formatTime(date, timeZone) {
-  return new Intl.DateTimeFormat("en-US", { timeZone, hour: "numeric", minute: "2-digit" }).format(date);
+export function formatTime(date, timeZone, { withZone = false } = {}) {
+  return new Intl.DateTimeFormat("en-US", {
+    timeZone, hour: "numeric", minute: "2-digit", ...(withZone ? { timeZoneName: "short" } : {}),
+  }).format(date);
 }
 
 export function formatDay(date, timeZone) {
@@ -65,7 +67,8 @@ export function formatDay(date, timeZone) {
 }
 
 export function formatTimeRange(start, end, timeZone) {
-  return `${formatTime(start, timeZone)} – ${formatTime(end, timeZone)}`;
+  const nextDay = dayKey(end, timeZone) !== dayKey(new Date(start.getTime()), timeZone) && end - start > 0;
+  return `${formatTime(start, timeZone)} – ${formatTime(end, timeZone)}${nextDay ? " next day" : ""}`;
 }
 
 export function dayKey(date, timeZone) {

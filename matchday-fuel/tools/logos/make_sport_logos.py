@@ -13,10 +13,12 @@ splashy coffee ring, with black brush lettering across the middle. This script
 
 Outputs (paths relative to matchday-fuel/):
     public/assets/logo/matchday-fuel.webp        960 px, original on white
+    public/assets/logo/matchday-fuel-720.webp    720 px
     public/assets/logo/matchday-fuel-480.webp    480 px
     public/assets/logo/matchday-fuel-1200.jpg    1200 px social preview
     public/assets/logo/apple-touch-icon.png      180 px
     public/assets/logo/sport-{sport}.webp        960 px
+    public/assets/logo/sport-{sport}-720.webp    720 px
     public/assets/logo/sport-{sport}-480.webp    480 px
     tools/logos/out/sport-{sport}.png            1254 px lossless masters
 
@@ -1038,6 +1040,7 @@ def main():
     original = to_image(w)
     save_variant(original, "matchday-fuel", [
         (960, os.path.join(logo_dir, "matchday-fuel.webp")),
+        (720, os.path.join(logo_dir, "matchday-fuel-720.webp")),
         (480, os.path.join(logo_dir, "matchday-fuel-480.webp")),
         (1200, os.path.join(logo_dir, "matchday-fuel-1200.jpg")),
         (180, os.path.join(logo_dir, "apple-touch-icon.png")),
@@ -1083,6 +1086,7 @@ def main():
         im.save(os.path.join(out_dir, "sport-%s.png" % sport), "PNG", optimize=True)
         save_variant(im, sport, [
             (960, os.path.join(logo_dir, "sport-%s.webp" % sport)),
+            (720, os.path.join(logo_dir, "sport-%s-720.webp" % sport)),
             (480, os.path.join(logo_dir, "sport-%s-480.webp" % sport)),
         ])
         print("built", sport)

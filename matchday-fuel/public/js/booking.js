@@ -20,6 +20,12 @@ export function initBooking() {
   const form = document.getElementById("book");
   if (!form) return;
   const statusEl = document.getElementById("book-status");
+  const notice = form.querySelector("[data-booking-notice]");
+  // Say up front that requests can't be sent yet, not after someone has filled in the form.
+  if (!FORM_ENDPOINT && notice) {
+    notice.textContent = "Booking requests open soon. Until then, this form can’t send anything.";
+    notice.hidden = false;
+  }
   const submitButton = form.querySelector('button[type="submit"]');
   let attempted = false;
 

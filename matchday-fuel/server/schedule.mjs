@@ -11,6 +11,7 @@
 // by start, at most 50.
 
 import { createHash } from "node:crypto";
+import { readConfig } from "./config.mjs";
 import { HttpError, json, requireMethod } from "./http.mjs";
 import { MAX_ICS_BYTES, parseIcs } from "./ics.mjs";
 import { DAY_MS, isValidTimeZone, parseLocalDateTime } from "./time.mjs";
@@ -425,5 +426,8 @@ export function findEvent(schedule, id) {
 export async function handleSchedule(request, env = {}) {
   requireMethod(request, "GET", "HEAD");
   const schedule = await loadSchedule({ env, request });
-  return json(200, schedule, { "cache-control": "public, max-age=60" });
+  // The page uses the same order cutoff as checkout, so it never offers a stop or time that
+  // checkout would refuse.
+  const orderCutoffMinutes = readConfig(env).orderCutoffMinutes;
+  return json(200, { ...schedule, orderCutoffMinutes }, { "cache-control": "public, max-age=60" });
 }
