@@ -1,0 +1,55 @@
+{
+  "timezone": "America/New_York",
+  "events": [
+    {
+      "id": "sample-2026-10-24-riverside-soccer",
+      "title": "Fall Classic Soccer Tournament",
+      "venue": "Riverside Sports Complex",
+      "address": "1200 River Rd, Springfield",
+      "start": "2026-10-24T08:00",
+      "end": "2026-10-24T18:00",
+      "notes": "Example stop. All-day tournament; look for the stand between Fields 3 and 4.",
+      "sample": true
+    },
+    {
+      "id": "sample-2026-10-30-memorial-football",
+      "title": "Friday Night Football",
+      "venue": "Memorial Stadium",
+      "address": "500 Stadium Dr, Springfield",
+      "start": "2026-10-30T17:30",
+      "end": "2026-10-30T22:00",
+      "notes": "Example stop. Kickoff at 7:00 PM; we're by the home-side gate.",
+      "sample": true
+    },
+    {
+      "id": "sample-2026-11-04-northside-hockey",
+      "title": "Youth Hockey Night",
+      "venue": "Northside Ice Arena",
+      "address": "77 Rink Ln, Springfield",
+      "start": "2026-11-04T17:00",
+      "end": "2026-11-04T21:00",
+      "notes": "Example stop. Inside the main lobby, next to the skate rental counter.",
+      "sample": true
+    },
+    {
+      "id": "sample-2026-11-08-westside-basketball",
+      "title": "Rec League Basketball Doubleheader",
+      "venue": "Westside Rec Center",
+      "address": "48 Elm St, Springfield",
+      "start": "2026-11-08T12:00",
+      "end": "2026-11-08T17:00",
+      "notes": "Example stop. Two games back to back; we're at the gym entrance.",
+      "sample": true
+    },
+    {
+      "id": "sample-2026-11-14-lakeview-baseball",
+      "title": "Fall Ball Baseball Showcase",
+      "venue": "Lakeview Ballpark",
+      "address": "300 Shore Ave, Springfield",
+      "start": "2026-11-14T10:00",
+      "end": "2026-11-14T16:00",
+      "notes": "Example stop. Behind home plate, near the concession stand.",
+      "sample": true
+    }
+  ]
+}

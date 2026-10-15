@@ -35,12 +35,36 @@ export function requireMethod(request, ...allowed) {
   }
 }
 
-// Reads a JSON body without trusting Content-Length, capped so a large post can't exhaust memory.
-export async function readJson(request, limitBytes = 16 * 1024) {
-  const text = await request.text();
-  if (new TextEncoder().encode(text).length > limitBytes) {
-    throw new HttpError(413, "TOO_LARGE", "The request is too large.");
+// Reads the body as a stream and stops once it passes the limit, so a large post can't exhaust
+// memory. Content-Length is used only to refuse early; the bytes actually read are what count.
+async function readBody(request, limitBytes) {
+  const tooLarge = () => new HttpError(413, "TOO_LARGE", "The request is too large.");
+  if (Number(request.headers.get("content-length")) > limitBytes) throw tooLarge();
+  if (!request.body) return new Uint8Array(0);
+  const reader = request.body.getReader();
+  const chunks = [];
+  let total = 0;
+  for (;;) {
+    const { done, value } = await reader.read();
+    if (done) break;
+    total += value.byteLength;
+    if (total > limitBytes) {
+      reader.cancel().catch(() => {});
+      throw tooLarge();
+    }
+    chunks.push(value);
   }
+  const bytes = new Uint8Array(total);
+  let offset = 0;
+  for (const chunk of chunks) {
+    bytes.set(chunk, offset);
+    offset += chunk.byteLength;
+  }
+  return bytes;
+}
+
+export async function readJson(request, limitBytes = 16 * 1024) {
+  const text = new TextDecoder().decode(await readBody(request, limitBytes));
   try {
     return JSON.parse(text);
   } catch {
