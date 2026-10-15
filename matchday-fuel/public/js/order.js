@@ -336,15 +336,18 @@ export function initOrder({ cart, state, announce }) {
       }
     }
     if (code === 409 && data?.code === "OUT_OF_STOCK") {
+      const changes = [];
       for (const short of data.items || []) {
         const item = state.menu.items.find((entry) => entry.variationId === short.variationId);
         if (!item) continue;
         item.available = short.available;
         item.soldOut = short.available <= 0;
         cart.set(item.key, Math.min(cart.get(item.key), drinkLimit(item)), drinkLimit(item));
+        changes.push(short.available > 0 ? `only ${short.available} ${item.name} left` : `${item.name} sold out`);
       }
       render();
-      fail(data.error ? `${data.error} Your order was updated; check it and try again.` : "Some drinks just sold out or ran low, so your order was updated. Check it and try again.");
+      const what = changes.length ? `${changes.join(" and ")}, so your order was updated` : "Some drinks just sold out or ran low, so your order was updated";
+      fail(`${what[0].toUpperCase()}${what.slice(1)}. Check it and try again.`);
       return;
     }
     if (code === 409 && data?.code === "EVENT_CLOSED") {

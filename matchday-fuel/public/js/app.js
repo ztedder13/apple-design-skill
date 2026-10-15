@@ -84,11 +84,15 @@ async function refreshMenu() {
 
 refreshMenu();
 
-loadSchedule().then((schedule) => {
+async function refreshSchedule() {
+  const schedule = await loadSchedule();
   state.schedule = schedule;
   showSchedule();
   order.render();
-});
+  if (schedule.mode === "unavailable") setTimeout(refreshSchedule, MENU_RETRY_MS);
+}
+
+refreshSchedule();
 
 // Keep "Open now", closed stops, and pickup times current while the page stays open.
 function refreshTimes() {

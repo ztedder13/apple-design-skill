@@ -814,17 +814,18 @@ def paint_basketball(P, L):
 def paint_football(P, L):
     rng = np.random.default_rng(501)
     leather = shift_ramp(P.ramp, hue=-0.004, sat=1.02, val=0.98)
-    ang = math.radians(-55.0)       # long axis; negative tilts it up to the right
+    ang = math.radians(-38.0)       # long axis; negative tilts it up to the right
     ux, uy = math.cos(ang), math.sin(ang)
     vx, vy = -uy, ux
     a, b = 440.0, 268.0
     lx = (GRID_X - CX) * ux + (GRID_Y - CY) * uy     # along the long axis
     ly = (GRID_X - CX) * vx + (GRID_Y - CY) * vy     # across it
-    # Silhouette: sides that keep curving out to the points, with the points slightly rounded
-    # (blur and re-threshold rounds convex corners only), like a real ball.
+    # Silhouette: a full, rounded belly that narrows to the points, with the points slightly
+    # rounded (blur and re-threshold rounds convex corners only), like a real ball. The fuller
+    # curve keeps it from reading as a diamond at label size.
     u = np.clip(np.abs(lx) / a, 0, 1)
     q = 1 - u * u
-    half = b * q * (1 + 0.8 * q) / 1.8 * (np.abs(lx) < a)
+    half = b * q ** 0.62 * (np.abs(lx) < a)
     sd = half - np.abs(ly)
     body = smoothstep(-1.0, 1.0, sd)
     body = smoothstep(0.45, 0.55, blur(body, 4.0)) * (1 - L.outside)

@@ -175,7 +175,7 @@ h2 {
 .btn:active { transform: scale(.97); }
 .btn[disabled], .btn[aria-disabled="true"] { opacity: .5; cursor: not-allowed; transform: none; filter: none; }
 .btn-small { min-height: 44px; padding: 0 18px; font-size: var(--step-0); }
-.nav-order { white-space: nowrap; flex: none; }
+.nav-order { white-space: nowrap; flex: 0 1 auto; min-width: 0; }
 .btn-block { width: 100%; }
 
 .count-badge {
@@ -290,7 +290,7 @@ h2 {
 .site-menu ul { list-style: none; margin: 0; padding: 0; display: grid; }
 .site-menu a { border-radius: 14px; }
 
-@media (max-width: 759px) {
+@media (max-width: 47.4375em) {
   .nav-links { display: none; }
   .menu-button { display: grid; }
   .bar { padding-left: 16px; gap: 4px; }
@@ -298,8 +298,9 @@ h2 {
   .wordmark { font-size: .75rem; letter-spacing: .04em; }
   .wordmark span + span { letter-spacing: .3em; }
 }
-@media (max-width: 359px) {
+@media (max-width: 22.5em) {
   .nav-order-long { display: none; }
+  .wordmark { font-size: min(.75rem, 3.6vw); }
 }
 
 /* ---------- Hero ---------- */
@@ -532,7 +533,7 @@ h2 {
   }
   .sports.is-scrub .sport-logo { width: min(80cqh, 36vw); justify-self: end; }
   .sports.is-scrub .sport-copy { justify-items: start; }
-  .sports.is-scrub .sport-copy h3 { font-size: min(var(--step-4), 14cqh); }
+  .sports.is-scrub .sport-copy h3 { font-size: clamp(24px, 14cqh, var(--step-4)); }
   .sports.is-scrub .pair img { max-height: 34cqh; }
 }
 @media (min-width: 880px) {
@@ -669,9 +670,11 @@ h2 {
   border-radius: 999px;
   font-size: var(--step-0);
   font-weight: 600;
-  white-space: nowrap;
+  line-height: 1.1;
+  text-align: center;
   cursor: pointer;
 }
+@media (max-width: 26.1875em) { .segmented label { padding-inline: 8px; } }
 .segmented input:focus-visible + label { outline: 2px solid var(--brew); outline-offset: 2px; }
 .segmented-thumb {
   position: absolute;
@@ -904,7 +907,7 @@ h2 {
 .stop-title { font-size: var(--step-2); font-weight: 700; line-height: 1.25; }
 .stop-meta { display: flex; align-items: flex-start; gap: 8px; color: var(--ink-2); font-size: var(--step-0); }
 .stop-meta .icon { margin-top: 2px; }
-.stop-meta a { color: var(--brew); padding-block: 10px; margin-block: -10px; }
+.stop-meta a { display: inline-block; color: var(--brew); padding-block: 11px; margin-block: -11px; }
 .stop-title, .stop-meta, .stop-notes, .stop-choice label, .summary-stop { overflow-wrap: anywhere; }
 .stop-notes { color: var(--ink-2); font-size: var(--step-0); }
 .chips { display: flex; flex-wrap: wrap; gap: 6px; }

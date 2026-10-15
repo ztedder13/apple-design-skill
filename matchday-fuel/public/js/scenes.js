@@ -256,7 +256,7 @@ export function initScenes() {
   if (bottle) scenes.push(bottleScene(bottle));
 
   // Static sections for Reduce Motion and for screens too short to pin anything.
-  const staticMode = window.matchMedia("(prefers-reduced-motion: reduce), (max-height: 359px)");
+  const staticMode = window.matchMedia("(prefers-reduced-motion: reduce), (max-height: 379px)");
   let first = true;
   const apply = () => {
     const pinned = first ? null : scenes.map((scene) => [scene, scene.position()]).find(([, at]) => at);
