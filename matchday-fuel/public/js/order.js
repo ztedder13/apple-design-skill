@@ -299,6 +299,15 @@ export function initOrder({ cart, state, announce }) {
   // Wiring ------------------------------------------------------------------------------------
 
   form.addEventListener("submit", onSubmit);
+  // Coming back from Square with the Back button can restore this page from the browser's
+  // cache mid-submit; reset the button so the order can be sent again.
+  window.addEventListener("pageshow", (event) => {
+    if (!event.persisted) return;
+    busy = false;
+    submit.disabled = false;
+    submit.textContent = "Continue to Payment";
+    showStatus("");
+  });
   for (const control of Object.values(fields)) {
     control.addEventListener("input", () => { if (attempted) validate(); });
   }

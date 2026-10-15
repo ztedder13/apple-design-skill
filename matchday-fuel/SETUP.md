@@ -81,7 +81,10 @@ Things to know:
   they pay. Two people can occasionally buy the last bottle at the same moment.
 - Online orders show up in Square as pickup orders with the stop, venue, and pickup time in the
   note, so the stand can see them in the Square Point of Sale order list.
-- Tax is added by Square at checkout using your location's tax settings.
+- Tax is added by Square at checkout using your location's tax settings. Tipping is off; to turn
+  it on, set `allow_tipping` to `true` in `server/checkout.mjs`.
+- Example stops (`"sample": true` in `schedule.json`) can be ordered in sandbox for testing, but
+  not once `SQUARE_ENVIRONMENT=production`.
 
 ## 4. Connect your calendar
 
@@ -108,7 +111,8 @@ public stand stops**, because everything on it appears on the website.
    (for example `[stand]`) and put it in the title or notes of every public stop. Only those
    events appear, with the keyword removed.
 
-Changes in the calendar show on the site within about five minutes.
+Changes in the calendar show on the site within about five minutes. Events marked private in
+your calendar app are never shown.
 
 ### No calendar?
 
