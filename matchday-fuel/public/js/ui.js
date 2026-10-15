@@ -31,6 +31,7 @@ export function stepper({ name, qty, max, onChange }) {
     el("button", {
       type: "button",
       "aria-label": qty === 1 ? `Remove ${name}` : `Remove one ${name}`,
+      disabled: qty <= 0,
       onclick: () => onChange(qty - 1),
     }, icon("i-minus")),
     el("output", { "aria-live": "off", text: String(qty) }),

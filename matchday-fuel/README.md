@@ -39,8 +39,9 @@ ordering opens soon, and a checkout button that explains nothing was charged. Op
 A drink's name, flavor, sport, and color appear in four places, so change them together:
 
 1. Its card in the lineup in `public/index.html` (and its pair in the sport scene).
-2. The drink table in `SPEC.md`, which the render tool reads.
-3. Re-render the images with `npm run render`.
+2. The drink list in `tools/render/drinks.js` (and the table in `SPEC.md`).
+3. Re-render the images: `npm install`, then `npm run logos` and `npm run render`. Rendering
+   uses Playwright's Chromium (`npx playwright install chromium` once) and takes several minutes.
 4. The item name in Square, which must match the name on the site.
 
 ## Design decisions
